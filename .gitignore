@@ -1,6 +1,10 @@
 # Documentation
 doc/
 
+# Dependencies
+vendor/
+node_modules/
+
 *.log
 .DS_Store
 .env
