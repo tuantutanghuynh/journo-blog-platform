@@ -1,2 +1,154 @@
-# journo
-A personal full-stack project to write, publish, and share blog posts, built step by step from documentation and UI/UX to development with React (Vite) and Laravel. Un projet full-stack personnel pour écrire, publier et partager des articles, conçu de la documentation au design puis au développement.
+# Journo — Personal Blog Platform
+
+A full-stack personal blog application where users can write, publish, and share articles. Built from scratch as a hands-on learning project, covering everything from business analysis and UX/UI design to API development and frontend implementation.
+
+---
+
+## Purpose
+
+This project is primarily a **learning playground**. The goals are:
+
+- Practice **React + TypeScript** (frontend) — components, routing, state management, API integration
+- Practice **PHP Laravel** (backend) — REST API, authentication, ORM, migrations
+- Follow a realistic full-stack workflow: BA → Design → Development → Git → Deployment
+- Incrementally add more advanced and challenging features over time
+- In the future, rewrite or extend the backend using **Java Spring Boot** as a second backend implementation
+
+This is not a production product — it is intentionally built step by step to build muscle memory across the stack.
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Frontend | React 18 + Vite + **TypeScript** |
+| Backend (current) | PHP 8.2 + Laravel 12 + Sanctum |
+| Backend (planned) | Java Spring Boot |
+| Database | MySQL (XAMPP) |
+| Auth | Laravel Sanctum (token-based) |
+| API style | REST / JSON |
+
+---
+
+## Core Features (v1)
+
+### Guest (unauthenticated)
+- Browse paginated list of published posts
+- Read full post detail
+- Search posts by keyword
+
+### Authenticated User
+- Register / Login / Logout
+- Create, edit, and delete own posts
+- View personal post dashboard
+
+---
+
+## API Endpoints
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| GET | `/api/posts` | No | List posts with search + pagination |
+| GET | `/api/posts/{id}` | No | Get post detail |
+| POST | `/api/register` | No | Register a new account |
+| POST | `/api/login` | No | Login → returns token |
+| POST | `/api/logout` | Yes | Logout |
+| GET | `/api/user` | Yes | Get current user info |
+| GET | `/api/my-posts` | Yes | Get own posts |
+| POST | `/api/posts` | Yes | Create a new post |
+| PUT | `/api/posts/{id}` | Yes | Update post (owner only) |
+| DELETE | `/api/posts/{id}` | Yes | Delete post (owner only) |
+
+---
+
+## Project Structure
+
+```
+journo/
+├── backend/        ← Laravel project (serves on port 8000)
+├── frontend/       ← React + Vite + TypeScript (serves on port 5173)
+├── doc/            ← Guides, ERD, wireframes, implementation docs
+└── database/       ← SQL schema and migration files
+```
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- [XAMPP](https://www.apachefriends.org/) (PHP 8.2+, MySQL)
+- Node.js 18+
+- Composer
+
+### Backend Setup
+
+```bash
+cd backend
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate --seed
+php artisan serve
+```
+
+Backend will be available at `http://localhost:8000`.
+
+### Frontend Setup
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Frontend will be available at `http://localhost:5173`.
+
+---
+
+## Roadmap
+
+### v1 — Foundation (current)
+- [x] Project setup and documentation
+- [x] Database schema design
+- [ ] Laravel REST API with Sanctum auth
+- [ ] React + TypeScript frontend (SPA)
+- [ ] Connect frontend to backend
+
+### v2 — Extended Features (planned)
+- [ ] Rich text / Markdown editor for posts
+- [ ] Image upload and media management
+- [ ] Post categories and tags
+- [ ] Comments system
+- [ ] User profile pages
+- [ ] Post likes / reactions
+- [ ] Admin dashboard
+
+### v3 — Advanced (future)
+- [ ] Rewrite backend in **Java Spring Boot**
+- [ ] Full-text search with Elasticsearch
+- [ ] Real-time notifications
+- [ ] OAuth (Google / GitHub login)
+- [ ] Deployment to cloud (Railway, Render, or VPS)
+
+---
+
+## Learning Focus
+
+Each phase of this project targets a specific skill set:
+
+| Phase | Focus |
+|---|---|
+| Business Analysis | User stories, requirements, use cases |
+| UX/UI Design | Wireframes, design system |
+| Backend | Laravel MVC, Eloquent ORM, REST API design, token auth |
+| Frontend | React hooks, TypeScript types, Axios, React Router, context API |
+| Project Management | Git workflow, branching, GitHub Projects |
+| Deployment | Environment config, build pipeline |
+
+---
+
+## License
+
+MIT
