@@ -11,25 +11,25 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        // Bước 1: Kiểm tra dữ liệu gửi lên có hợp lệ không
+        // Step 1: Validate incoming data
         $request->validate([
             'name'     => 'required|string|max:255',
             'email'    => 'required|email|unique:users',
             'password' => 'required|min:8',
         ]);
 
-        // Bước 2: Tạo user mới trong database
+        // Step 2: Create new user in database
         $user = new User();
         $user->name     = $request->name;
         $user->email    = $request->email;
-        $user->password = bcrypt($request->password); // mã hóa password trước khi lưu
+        $user->password = bcrypt($request->password); // hash password before saving
 
         $user->save();
 
-        // Bước 3: Tạo token để user đăng nhập luôn sau khi đăng ký
+        // Step 3: Create token so user is logged in right after registering
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        // Bước 4: Trả về thông tin user + token
+        // Step 4: Return user info + token
         return response()->json([
             'user'  => $user,
             'token' => $token,
@@ -38,29 +38,29 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        // Bước 1: Tìm user theo email trong database
+        // Step 1: Find user by email in database
         $user = User::where('email', $request->email)->first();
 
-        // Bước 2: Kiểm tra user có tồn tại không
+        // Step 2: Check if user exists
         if (!$user) {
             return response()->json([
-                'message' => 'Email không tồn tại',
+                'message' => 'Email not found',
             ], 404);
         }
 
-        // Bước 3: Kiểm tra password có đúng không
+        // Step 3: Check if password is correct
         $passwordIsCorrect = Hash::check($request->password, $user->password);
 
         if (!$passwordIsCorrect) {
             return response()->json([
-                'message' => 'Sai mật khẩu',
+                'message' => 'Wrong password',
             ], 401);
         }
 
-        // Bước 4: Tạo token mới cho phiên đăng nhập này
+        // Step 4: Create a new token for this login session
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        // Bước 5: Trả về thông tin user + token
+        // Step 5: Return user info + token
         return response()->json([
             'user'  => $user,
             'token' => $token,
@@ -69,20 +69,20 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        // Lấy user đang đăng nhập từ token
+        // Get the currently logged in user from token
         $user = $request->user();
 
-        // Xóa token hiện tại → user bị đăng xuất
+        // Delete current token → user is logged out
         $user->currentAccessToken()->delete();
 
         return response()->json([
-            'message' => 'Đăng xuất thành công',
+            'message' => 'Logged out successfully',
         ], 200);
     }
 
     public function me(Request $request)
     {
-        // Lấy thông tin user đang đăng nhập từ token
+        // Get currently logged in user from token
         $user = $request->user();
 
         return response()->json($user, 200);

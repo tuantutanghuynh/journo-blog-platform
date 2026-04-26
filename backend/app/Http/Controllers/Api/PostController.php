@@ -9,10 +9,10 @@ use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
-    // Lấy danh sách tất cả bài viết đã published
+    // Get all published posts
     public function index()
     {
-        // Lấy 10 bài mỗi trang, kèm thông tin tác giả, danh mục, tags
+        // Get 10 posts per page, with author, category and tags info
         $posts = Post::with('author', 'category', 'tags')
             ->where('status', 'published')
             ->orderBy('published_at', 'desc')
@@ -21,28 +21,28 @@ class PostController extends Controller
         return response()->json($posts, 200);
     }
 
-    // Xem chi tiết 1 bài viết theo ID
+    // Get a single post by ID
     public function show(string $id)
     {
-        // Tìm bài viết theo ID, nếu không có thì tự trả về 404
+        // Find post by ID
         $post = Post::with('author', 'category', 'tags', 'comments')
             ->where('status', 'published')
             ->find($id);
 
-        // Kiểm tra bài viết có tồn tại không
+        // Check if post exists
         if (!$post) {
             return response()->json([
-                'message' => 'Không tìm thấy bài viết',
+                'message' => 'Post not found',
             ], 404);
         }
 
         return response()->json($post, 200);
     }
 
-    // Tạo bài viết mới (phải đăng nhập)
+    // Create a new post (must be logged in)
     public function store(Request $request)
     {
-        // Bước 1: Kiểm tra dữ liệu gửi lên
+        // Step 1: Validate incoming data
         $request->validate([
             'title'       => 'required|string|max:255',
             'content'     => 'required|string',
@@ -51,7 +51,7 @@ class PostController extends Controller
             'status'      => 'nullable|in:draft,published',
         ]);
 
-        // Bước 2: Tạo bài viết mới
+        // Step 2: Create new post
         $post = new Post();
         $post->user_id     = $request->user()->id;
         $post->category_id = $request->category_id;
@@ -59,9 +59,9 @@ class PostController extends Controller
         $post->slug        = Str::slug($request->title); // "Hello World" → "hello-world"
         $post->content     = $request->content;
         $post->excerpt     = $request->excerpt;
-        $post->status      = $request->status ?? 'draft'; // mặc định là draft nếu không truyền
+        $post->status      = $request->status ?? 'draft'; // default to draft if not provided
 
-        // Nếu status là published thì lưu thời gian đăng
+        // If status is published, save the publish time
         if ($post->status === 'published') {
             $post->published_at = now();
         }
@@ -71,27 +71,27 @@ class PostController extends Controller
         return response()->json($post, 201);
     }
 
-    // Cập nhật bài viết (chỉ được sửa bài của chính mình)
+    // Update a post (can only edit your own posts)
     public function update(Request $request, string $id)
     {
-        // Bước 1: Tìm bài viết theo ID
+        // Step 1: Find post by ID
         $post = Post::find($id);
 
-        // Bước 2: Kiểm tra bài viết có tồn tại không
+        // Step 2: Check if post exists
         if (!$post) {
             return response()->json([
-                'message' => 'Không tìm thấy bài viết',
+                'message' => 'Post not found',
             ], 404);
         }
 
-        // Bước 3: Kiểm tra bài viết có phải của user đang đăng nhập không
+        // Step 3: Check if this post belongs to the logged in user
         if ($post->user_id !== $request->user()->id) {
             return response()->json([
-                'message' => 'Bạn không có quyền sửa bài viết này',
+                'message' => 'You do not have permission to edit this post',
             ], 403);
         }
 
-        // Bước 4: Kiểm tra dữ liệu gửi lên
+        // Step 4: Validate incoming data
         $request->validate([
             'title'       => 'nullable|string|max:255',
             'content'     => 'nullable|string',
@@ -100,7 +100,7 @@ class PostController extends Controller
             'status'      => 'nullable|in:draft,published',
         ]);
 
-        // Bước 5: Cập nhật từng field nếu có gửi lên
+        // Step 5: Update each field if it was sent in the request
         if ($request->title) {
             $post->title = $request->title;
             $post->slug  = Str::slug($request->title);
@@ -121,7 +121,7 @@ class PostController extends Controller
         if ($request->status) {
             $post->status = $request->status;
 
-            // Nếu vừa chuyển sang published thì lưu thời gian đăng
+            // If just switched to published, save the publish time
             if ($request->status === 'published' && !$post->published_at) {
                 $post->published_at = now();
             }
@@ -132,31 +132,31 @@ class PostController extends Controller
         return response()->json($post, 200);
     }
 
-    // Xóa bài viết (chỉ được xóa bài của chính mình)
+    // Delete a post (can only delete your own posts)
     public function destroy(Request $request, string $id)
     {
-        // Bước 1: Tìm bài viết theo ID
+        // Step 1: Find post by ID
         $post = Post::find($id);
 
-        // Bước 2: Kiểm tra bài viết có tồn tại không
+        // Step 2: Check if post exists
         if (!$post) {
             return response()->json([
-                'message' => 'Không tìm thấy bài viết',
+                'message' => 'Post not found',
             ], 404);
         }
 
-        // Bước 3: Kiểm tra bài viết có phải của user đang đăng nhập không
+        // Step 3: Check if this post belongs to the logged in user
         if ($post->user_id !== $request->user()->id) {
             return response()->json([
-                'message' => 'Bạn không có quyền xóa bài viết này',
+                'message' => 'You do not have permission to delete this post',
             ], 403);
         }
 
-        // Bước 4: Xóa bài viết
+        // Step 4: Delete the post
         $post->delete();
 
         return response()->json([
-            'message' => 'Xóa bài viết thành công',
+            'message' => 'Post deleted successfully',
         ], 200);
     }
 }
