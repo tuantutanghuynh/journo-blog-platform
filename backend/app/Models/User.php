@@ -12,11 +12,12 @@ use App\Models\Comment;
 use App\Models\Like;
 use App\Models\Follow;
 use App\Models\Media;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
