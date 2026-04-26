@@ -229,10 +229,10 @@ CREATE TABLE follows (
 -- SEED DATA (Sample data for testing)
 -- ============================================================
 
--- Admin user (password: password)
+-- Admin user (password: 12345678)
 INSERT INTO users (name, email, password, role) VALUES 
-('Admin', 'admin@blog.com', '$2y$12$qKjdAU7OD/hLqWDgOKJ5.uqPqkXbZJFKV8YDvEiTbEn3V2K6QOXL.', 'admin'),
-('Author', 'author@blog.com', '$2y$12$qKjdAU7OD/hLqWDgOKJ5.uqPqkXbZJFKV8YDvEiTbEn3V2K6QOXL.', 'author');
+('Admin', 'admin@blog.com', '12345678', 'admin'),
+('Author', 'author@blog.com', '12345678', 'author');
 
 -- Sample categories
 INSERT INTO categories (name, slug, description, color) VALUES
