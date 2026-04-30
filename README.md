@@ -49,16 +49,21 @@ This is not a production product — it is intentionally built step by step to b
 
 | Method | Endpoint | Auth | Description |
 |--------|----------|------|-------------|
-| GET | `/api/posts` | No | List posts with search + pagination |
-| GET | `/api/posts/{id}` | No | Get post detail |
 | POST | `/api/register` | No | Register a new account |
 | POST | `/api/login` | No | Login → returns token |
 | POST | `/api/logout` | Yes | Logout |
-| GET | `/api/user` | Yes | Get current user info |
-| GET | `/api/my-posts` | Yes | Get own posts |
+| GET | `/api/me` | Yes | Get current user info |
+| GET | `/api/posts` | No | List published posts (paginated) |
+| GET | `/api/posts/{id}` | No | Get post detail |
 | POST | `/api/posts` | Yes | Create a new post |
 | PUT | `/api/posts/{id}` | Yes | Update post (owner only) |
 | DELETE | `/api/posts/{id}` | Yes | Delete post (owner only) |
+| GET | `/api/categories` | No | List all categories |
+| GET | `/api/categories/{id}` | No | Get category detail |
+| GET | `/api/categories/{id}/posts` | No | Get posts in a category |
+| GET | `/api/posts/{id}/comments` | No | Get comments of a post |
+| POST | `/api/posts/{id}/comments` | Yes | Add a comment |
+| DELETE | `/api/comments/{id}` | Yes | Delete comment (owner only) |
 
 ---
 
@@ -111,18 +116,23 @@ Frontend will be available at `http://localhost:5173`.
 
 ### v1 — Foundation (current)
 - [x] Project setup and documentation
-- [x] Database schema design
-- [ ] Laravel REST API with Sanctum auth
+- [x] Database schema design (11 tables)
+- [x] Eloquent Models + Relationships (8 models)
+- [x] Migrations + Seeders
+- [x] Laravel REST API with Sanctum auth
+- [x] AuthController — register, login, logout, me
+- [x] PostController — CRUD posts
+- [x] CategoryController — list, detail, posts by category
+- [x] CommentController — list, add, delete comments
 - [ ] React + TypeScript frontend (SPA)
-- [ ] Connect frontend to backend
+- [ ] Connect frontend to backend (Axios + CORS)
 
 ### v2 — Extended Features (planned)
 - [ ] Rich text / Markdown editor for posts
 - [ ] Image upload and media management
-- [ ] Post categories and tags
-- [ ] Comments system
-- [ ] User profile pages
 - [ ] Post likes / reactions
+- [ ] User profile pages
+- [ ] Follow / unfollow users
 - [ ] Admin dashboard
 
 ### v3 — Advanced (future)
