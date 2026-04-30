@@ -47,10 +47,10 @@ class CategoryController extends Controller
         }
 
         //get all published post in this category
-        $posts =  Post::with('author', 'tag')
+        $posts =  Post::with('author', 'tags')
             ->where('category_id', $id)
             ->where('status', 'published')
-            ->orderedById('published_at', 'desc')
+            ->orderBy('published_at', 'desc')
             ->paginate(10);
 
         return response()->json($posts, 200);
