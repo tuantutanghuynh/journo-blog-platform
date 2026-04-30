@@ -124,8 +124,15 @@ Frontend will be available at `http://localhost:5173`.
 - [x] PostController — CRUD posts
 - [x] CategoryController — list, detail, posts by category
 - [x] CommentController — list, add, delete comments
-- [ ] React + TypeScript frontend (SPA)
-- [ ] Connect frontend to backend (Axios + CORS)
+- [x] React + Vite frontend (SPA)
+- [x] Connect frontend to backend (Axios)
+- [x] Home page — list all published posts
+- [x] Login page — authenticate and store token
+- [x] Register page — create new account
+- [ ] Post Detail page — view single post + comments
+- [ ] Navbar — navigation between pages
+- [ ] Logout functionality
+- [ ] Create Post page (authenticated users only)
 
 ### v2 — Extended Features (planned)
 - [ ] Rich text / Markdown editor for posts
