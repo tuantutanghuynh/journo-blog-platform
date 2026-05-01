@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import api from "../api/axios";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   // store the list of posts
@@ -30,11 +31,9 @@ export default function Home() {
       // save posts to state
       // res.data.data because Laravel paginate() wraps posts in { data: [...] }
       setPosts(res.data.data);
-
     } catch (err) {
       // show error message if fetch fails
       setError("Failed to load posts");
-
     } finally {
       // always stop loading whether success or fail
       setLoading(false);
@@ -60,7 +59,9 @@ export default function Home() {
       ) : (
         posts.map((post) => (
           <div key={post.id}>
-            <h2>{post.title}</h2>
+            <h2>
+              <Link to={`/posts/${post.id}`}>{post.title}</Link>
+            </h2>
             <p>{post.excerpt}</p>
             <p>By: {post.author?.name}</p>
             <hr />
