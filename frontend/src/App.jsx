@@ -5,6 +5,7 @@ import Register from "./pages/Register";
 import PostDetail from "./pages/PostDetail";
 import Navbar from "./components/NavBar";
 import CreatePost from "./pages/CreatePost";
+import EditPost from "./pages/EditPost";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/posts/:id" element={<PostDetail />} />
         <Route path="/create-post" element={<CreatePost />} />
+        <Route path="/posts/:id/edit" element={<EditPost />} />
       </Routes>
     </BrowserRouter>
   );
