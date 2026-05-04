@@ -54,6 +54,7 @@ export default function PosDetail() {
       <h1>{post.title}</h1>
       <p>By: {post.author?.name}</p>
       <p>Category: {post.category?.name}</p>
+      <a href={`/posts/${id}/edit`}>Edit Post</a>
       <hr />
 
       <p>{post.content}</p>
